@@ -44,9 +44,7 @@ export function Board({
     setGameState((currentState) =>
       currentState.map((row, rowIndex) =>
         row.map((item, itemIndex) =>
-          rowIndex === targetRowIndex &&
-          itemIndex === targetItemIndex &&
-          item === undefined
+          rowIndex === targetRowIndex && itemIndex === targetItemIndex
             ? activePlayer
             : item
         )
@@ -67,6 +65,7 @@ export function Board({
                   onClick={() => {
                     handleButtonClick(rowIndex, itemIndex);
                   }}
+                  disabled={item !== undefined}
                 >
                   {item !== undefined && (item ? "O" : "X")}
                 </button>
