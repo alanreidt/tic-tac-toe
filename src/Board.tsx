@@ -1,15 +1,67 @@
 import React, { useEffect, useMemo, useState } from "react";
 import styles from "./Board.module.css";
 
-const checkGameStatus = (
-  gameState: (0 | 1 | undefined)[][]
-): "draw" | "win 1" | "win 0" | undefined => {
-  const isDraw = !gameState.some((row) =>
-    row.some((item) => item === undefined)
-  );
+const checkIsDraw = (gameState: (0 | 1 | undefined)[][]): boolean => {
+  return !gameState.some((row) => row.some((item) => item === undefined));
+};
 
-  if (isDraw) {
+const checkIsWin = (
+  gameState: (0 | 1 | undefined)[][],
+  activePlayer: 0 | 1
+): boolean => {
+  for (let i = 0; i < gameState.length; i++) {
+    let count = 0;
+
+    for (let j = 0; j < gameState[i].length; j++) {
+      count = gameState[i][j] === activePlayer ? count + 1 : 0;
+
+      if (count === 3) {
+        return true;
+      }
+    }
+  }
+
+  for (let i = 0; i < gameState.length; i++) {
+    let count = 0;
+
+    for (let j = 0; j < gameState[i].length; j++) {
+      count = gameState[j][i] === activePlayer ? count + 1 : 0;
+
+      if (count === 3) {
+        return true;
+      }
+    }
+  }
+
+  for (let i = 0; i < gameState.length; i++) {
+    let count = 0;
+
+    for (let j = 0; j < gameState[i].length; j++) {
+      count = gameState[j][i] === activePlayer ? count + 1 : 0;
+
+      if (count === 3) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+};
+
+const checkGameStatus = (
+  gameState: (0 | 1 | undefined)[][],
+  activePlayer: 0 | 1
+): "draw" | "win 1" | "win 0" | undefined => {
+  if (checkIsDraw(gameState)) {
     return "draw";
+  }
+
+  if (activePlayer === 0 && checkIsWin(gameState, activePlayer)) {
+    return "win 0";
+  }
+
+  if (activePlayer === 1 && checkIsWin(gameState, activePlayer)) {
+    return "win 1";
   }
 
   return;
@@ -34,8 +86,8 @@ export function Board({
   const [activePlayer, setActivePlayer] = useState<0 | 1>(0);
 
   useEffect(() => {
-    onGameStatusChange(checkGameStatus(gameState));
-  }, [gameState, onGameStatusChange]);
+    onGameStatusChange(checkGameStatus(gameState, activePlayer));
+  }, [gameState, activePlayer, onGameStatusChange]);
 
   const handleButtonClick = (
     targetRowIndex: number,
