@@ -86,7 +86,7 @@ export function Board({
   const [activePlayer, setActivePlayer] = useState<0 | 1>(0);
 
   useEffect(() => {
-    onGameStatusChange(checkGameStatus(gameState, activePlayer));
+    onGameStatusChange(checkGameStatus(gameState, activePlayer === 0 ? 1 : 0));
   }, [gameState, activePlayer, onGameStatusChange]);
 
   const handleButtonClick = (
@@ -119,7 +119,7 @@ export function Board({
                   }}
                   disabled={item !== undefined}
                 >
-                  {item !== undefined && (item ? "O" : "X")}
+                  {item !== undefined && (item === 0 ? "X" : "O")}
                 </button>
               </td>
             ))}
