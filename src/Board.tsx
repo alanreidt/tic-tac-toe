@@ -56,6 +56,27 @@ const checkIsWin = (
     }
   }
 
+  // check columns for reverse diagonal winning combination
+  for (
+    let initialColumn = 0;
+    initialColumn < gameState[0].length;
+    initialColumn++
+  ) {
+    let count = 0;
+
+    for (
+      let raw = gameState.length - 1, column = initialColumn;
+      raw >= 0 && column < gameState[0].length;
+      raw--, column++
+    ) {
+      count = gameState[raw][column] === activePlayer ? count + 1 : 0;
+
+      if (count === 3) {
+        return true;
+      }
+    }
+  }
+
   // check raws for diagonal winning combination
   for (let initialRaw = 1; initialRaw < gameState.length; initialRaw++) {
     let count = 0;
@@ -64,6 +85,23 @@ const checkIsWin = (
       let raw = initialRaw, column = 0;
       raw < gameState.length && column < gameState[0].length;
       raw++, column++
+    ) {
+      count = gameState[raw][column] === activePlayer ? count + 1 : 0;
+
+      if (count === 3) {
+        return true;
+      }
+    }
+  }
+
+  // check raws for reverse diagonal winning combination
+  for (let initialRaw = 0; initialRaw < gameState.length; initialRaw++) {
+    let count = 0;
+
+    for (
+      let raw = initialRaw, column = 0;
+      raw >= 0 && column < gameState[0].length;
+      raw--, column++
     ) {
       count = gameState[raw][column] === activePlayer ? count + 1 : 0;
 
