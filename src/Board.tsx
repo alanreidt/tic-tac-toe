@@ -9,11 +9,12 @@ const checkIsWin = (
   gameState: (0 | 1 | undefined)[][],
   activePlayer: 0 | 1
 ): boolean => {
-  for (let i = 0; i < gameState.length; i++) {
+  // check raws for winning combination
+  for (let raw = 0; raw < gameState.length; raw++) {
     let count = 0;
 
-    for (let j = 0; j < gameState[i].length; j++) {
-      count = gameState[i][j] === activePlayer ? count + 1 : 0;
+    for (let column = 0; column < gameState[0].length; column++) {
+      count = gameState[raw][column] === activePlayer ? count + 1 : 0;
 
       if (count === 3) {
         return true;
@@ -21,11 +22,12 @@ const checkIsWin = (
     }
   }
 
-  for (let i = 0; i < gameState.length; i++) {
+  // check columns for winning combination
+  for (let column = 0; column < gameState.length; column++) {
     let count = 0;
 
-    for (let j = 0; j < gameState[i].length; j++) {
-      count = gameState[j][i] === activePlayer ? count + 1 : 0;
+    for (let raw = 0; raw < gameState[0].length; raw++) {
+      count = gameState[raw][column] === activePlayer ? count + 1 : 0;
 
       if (count === 3) {
         return true;
@@ -33,11 +35,37 @@ const checkIsWin = (
     }
   }
 
-  for (let i = 0; i < gameState.length; i++) {
+  // check columns for diagonal winning combination
+  for (
+    let initialColumn = 0;
+    initialColumn < gameState[0].length;
+    initialColumn++
+  ) {
     let count = 0;
 
-    for (let j = 0; j < gameState[i].length; j++) {
-      count = gameState[j][i] === activePlayer ? count + 1 : 0;
+    for (
+      let raw = 0, column = initialColumn;
+      raw < gameState.length && column < gameState[0].length;
+      raw++, column++
+    ) {
+      count = gameState[raw][column] === activePlayer ? count + 1 : 0;
+
+      if (count === 3) {
+        return true;
+      }
+    }
+  }
+
+  // check raws for diagonal winning combination
+  for (let initialRaw = 1; initialRaw < gameState.length; initialRaw++) {
+    let count = 0;
+
+    for (
+      let raw = initialRaw, column = 0;
+      raw < gameState.length && column < gameState[0].length;
+      raw++, column++
+    ) {
+      count = gameState[raw][column] === activePlayer ? count + 1 : 0;
 
       if (count === 3) {
         return true;
